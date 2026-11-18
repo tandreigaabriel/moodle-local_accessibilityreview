@@ -108,22 +108,27 @@ class license {
         echo $OUTPUT->header();
         echo $OUTPUT->heading(get_string('licenseheading', self::COMPONENT));
         echo \html_writer::tag('p', get_string('license_' . self::get_status(), self::COMPONENT));
-        echo \html_writer::tag('p', \html_writer::link(
-            new \moodle_url('https://tandreig.com/plugins/accessibility-review'),
-            get_string('licensebuy', self::COMPONENT)
-        ));
-        echo \html_writer::tag('p', \html_writer::link(
-            new \moodle_url('https://tandreig.com/request-key'),
-            get_string('licensetrial', self::COMPONENT)
-        ));
         if (has_capability('moodle/site:config', \context_system::instance())) {
             echo \html_writer::tag('p', \html_writer::link(
                 new \moodle_url('/local/accessibilityreview/license.php'),
-                get_string('licensesettings', self::COMPONENT)
+                get_string('licensesettings', self::COMPONENT),
+                ['class' => 'btn btn-primary']
             ));
+            echo self::purchase_info();
+        } else {
+            echo \html_writer::tag('p', get_string('license_askadmin', self::COMPONENT));
         }
         echo $OUTPUT->footer();
         exit;
+    }
+
+    /**
+     * How to obtain a licence key (no external links).
+     *
+     * @return string HTML
+     */
+    public static function purchase_info(): string {
+        return \html_writer::tag('p', get_string('license_purchase', self::COMPONENT));
     }
 
     /**
