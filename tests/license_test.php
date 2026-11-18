@@ -103,6 +103,21 @@ final class license_test extends \advanced_testcase {
     }
 
     /**
+     * A transport failure preserves a previously activated perpetual licence.
+     *
+     * @return void
+     */
+    public function test_transport_failure_preserves_licence(): void {
+        $this->resetAfterTest();
+        fake_license::$reply = [200, json_encode(['status' => 'ok', 'plan' => 'perpetual',
+            'expires_at' => time() + 100, 'support_until' => time() + 100]), 0];
+        $this->assertTrue(fake_license::activate('TEST-KEY'));
+        fake_license::$reply = [0, '', 7];
+        $this->assertFalse(fake_license::refresh());
+        $this->assertSame('valid', license::get_status());
+    }
+
+    /**
      * A scheduled scan does not queue courses without a licence.
      *
      * @return void
