@@ -63,6 +63,6 @@ echo html_writer::tag('label', get_string('licensekey', $p), ['for' => 'licensek
 echo html_writer::empty_tag('input', ['type' => 'password', 'name' => 'key', 'id' => 'licensekey', 'required' => 'required']);
 echo html_writer::empty_tag('input', ['type' => 'submit', 'value' => get_string('licenseactivate', $p)]);
 echo html_writer::end_tag('form');
-echo html_writer::tag('p', html_writer::link('https://tandreig.com/plugins/accessibilityreview', get_string('licensebuy', $p)));
+echo html_writer::tag('p', html_writer::link('https://tandreig.com/plugins/accessibility-review', get_string('licensebuy', $p)));
 echo html_writer::tag('p', html_writer::link('https://tandreig.com/request-key', get_string('licensetrial', $p)));
 echo $OUTPUT->footer();

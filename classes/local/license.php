@@ -109,7 +109,7 @@ class license {
         echo $OUTPUT->heading(get_string('licenseheading', self::COMPONENT));
         echo \html_writer::tag('p', get_string('license_' . self::get_status(), self::COMPONENT));
         echo \html_writer::tag('p', \html_writer::link(
-            new \moodle_url('https://tandreig.com/plugins/accessibilityreview'),
+            new \moodle_url('https://tandreig.com/plugins/accessibility-review'),
             get_string('licensebuy', self::COMPONENT)
         ));
         echo \html_writer::tag('p', \html_writer::link(

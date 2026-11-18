@@ -29,8 +29,8 @@ $tasks = [
     [
         'classname' => '\local_accessibilityreview\task\renew_license',
         'blocking' => 0,
-        'minute' => '0',
-        'hour' => '4',
+        'minute' => 'R',
+        'hour' => 'R',
         'day' => '*',
         'month' => '*',
         'dayofweek' => '0',
