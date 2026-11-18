@@ -49,20 +49,37 @@ if (data_submitted()) {
 $p = 'local_accessibilityreview';
 echo $OUTPUT->header();
 echo $OUTPUT->heading(get_string('licenseheading', $p));
-echo html_writer::tag('p', get_string('license_' . license::get_status(), $p));
+$status = license::get_status();
+echo html_writer::tag('p', get_string('license_' . $status, $p));
 $info = license::get_info();
-if ($info && license::get_status() !== 'unlicensed') {
-    echo html_writer::tag('p', get_string('licenseplan', $p, s($info->plan)));
+if ($info && $status !== 'unlicensed' && in_array($info->plan, ['trial', 'perpetual'], true)) {
+    echo html_writer::tag('p', get_string('licenseplan', $p, get_string('licenseplan_' . $info->plan, $p)));
+    if ($info->plan === 'trial' && !empty($info->expires_at)) {
+        echo html_writer::tag('p', get_string('licensetrialends', $p, userdate($info->expires_at)));
+    }
     if (!empty($info->support_until)) {
         echo html_writer::tag('p', get_string('licensesupport', $p, userdate($info->support_until)));
     }
 }
-echo html_writer::start_tag('form', ['method' => 'post', 'action' => $url->out(false)]);
+echo html_writer::start_tag('form', ['method' => 'post', 'action' => $url->out(false), 'class' => 'mb-4']);
 echo html_writer::empty_tag('input', ['type' => 'hidden', 'name' => 'sesskey', 'value' => sesskey()]);
-echo html_writer::tag('label', get_string('licensekey', $p), ['for' => 'licensekey']);
-echo html_writer::empty_tag('input', ['type' => 'password', 'name' => 'key', 'id' => 'licensekey', 'required' => 'required']);
-echo html_writer::empty_tag('input', ['type' => 'submit', 'value' => get_string('licenseactivate', $p)]);
+echo html_writer::tag('label', get_string('licensekey', $p), ['for' => 'licensekey', 'class' => 'form-label']);
+echo html_writer::start_div('d-flex flex-wrap gap-2');
+echo html_writer::empty_tag('input', [
+    'type' => 'password',
+    'name' => 'key',
+    'id' => 'licensekey',
+    'required' => 'required',
+    'autocomplete' => 'off',
+    'class' => 'form-control w-auto',
+    'size' => 34,
+]);
+echo html_writer::empty_tag('input', [
+    'type' => 'submit',
+    'value' => get_string('licenseactivate', $p),
+    'class' => 'btn btn-primary',
+]);
+echo html_writer::end_div();
 echo html_writer::end_tag('form');
-echo html_writer::tag('p', html_writer::link('https://tandreig.com/plugins/accessibility-review', get_string('licensebuy', $p)));
-echo html_writer::tag('p', html_writer::link('https://tandreig.com/request-key', get_string('licensetrial', $p)));
+echo license::purchase_info();
 echo $OUTPUT->footer();

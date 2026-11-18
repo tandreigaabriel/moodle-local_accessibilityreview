@@ -1,8 +1,13 @@
 # Changelog
 
-## v2.2.0
+## v2.2.0 (2026-11-19) – 2026111900
 
-- Add site licence activation and periodic validation.
+- Commercial licence per site, purchased through Moodle Marketplace; 14-day trial keys.
+- Licence page for site administrators (Site administration → Plugins → Local plugins →
+  Accessibility review → Manage licence), with the plan and the trial or support end date.
+- Without a valid licence, plugin pages show a licence notice and scans do not run. Existing
+  data is kept. Teachers are asked to contact their site administrator.
+- The licence is re-checked weekly. Network errors never disable an activated licence.
 
 ## 2.1.3 (2026-11-18) – 2026111800
 
