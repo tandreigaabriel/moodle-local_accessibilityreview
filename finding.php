@@ -31,6 +31,8 @@ use local_accessibilityreview\local\checks\check_registry;
 use local_accessibilityreview\local\finding_manager;
 use local_accessibilityreview\local\history;
 
+\local_accessibilityreview\local\license::require_valid();
+
 $id = required_param('id', PARAM_INT);
 $finding = $DB->get_record(finding_manager::TABLE, ['id' => $id], '*', MUST_EXIST);
 [$course, $context] = access::require_course_view((int) $finding->courseid);

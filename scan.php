@@ -28,6 +28,8 @@ require_once(__DIR__ . '/../../config.php');
 
 use local_accessibilityreview\local\scanner;
 
+\local_accessibilityreview\local\license::require_valid();
+
 $courseid = optional_param('id', 0, PARAM_INT);
 $categoryid = optional_param('categoryid', -1, PARAM_INT);
 

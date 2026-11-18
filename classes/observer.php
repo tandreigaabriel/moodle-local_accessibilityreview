@@ -36,6 +36,9 @@ class observer {
      * @return void
      */
     public static function content_changed(\core\event\base $event): void {
+        if (\local_accessibilityreview\local\license::get_status() !== 'valid') {
+            return;
+        }
         $courseid = (int) $event->courseid;
         if ($courseid <= 0 || $courseid == SITEID || !get_config('local_accessibilityreview', 'rescanonedit')) {
             return;

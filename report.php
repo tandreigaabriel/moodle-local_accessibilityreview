@@ -38,6 +38,8 @@ use local_accessibilityreview\local\progress;
 use local_accessibilityreview\local\resource_manager;
 use local_accessibilityreview\local\scanner;
 
+\local_accessibilityreview\local\license::require_valid();
+
 $p = 'local_accessibilityreview';
 $courseid = required_param('id', PARAM_INT);
 [$course, $context] = access::require_course_view($courseid);

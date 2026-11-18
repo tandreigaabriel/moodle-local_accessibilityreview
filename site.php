@@ -31,6 +31,8 @@ use local_accessibilityreview\local\findings_filter;
 use local_accessibilityreview\local\links\link_manager;
 use local_accessibilityreview\local\resource_manager;
 
+\local_accessibilityreview\local\license::require_valid();
+
 $tab = optional_param('tab', 'courses', PARAM_ALPHA);
 $tab = in_array($tab, ['courses', 'findings'], true) ? $tab : 'courses';
 $categoryid = optional_param('categoryid', 0, PARAM_INT);

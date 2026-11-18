@@ -58,6 +58,9 @@ class cleanup extends \core\task\scheduled_task {
             'status IN (:q, :r) AND timemodified < :cutoff',
             ['q' => scanner::STATUS_QUEUED, 'r' => scanner::STATUS_RUNNING, 'cutoff' => $now - 2 * HOURSECS]
         );
+        if (\local_accessibilityreview\local\license::get_status() !== 'valid') {
+            $stalled = [];
+        }
         foreach ($stalled as $scan) {
             if ($scan->timemodified < $now - DAYSECS) {
                 scanner::fail($scan, get_string('error_stalled', 'local_accessibilityreview'));

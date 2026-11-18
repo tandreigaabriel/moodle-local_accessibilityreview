@@ -31,6 +31,8 @@ use local_accessibilityreview\local\checks\check_registry;
 use local_accessibilityreview\local\csv_safe;
 use local_accessibilityreview\local\findings_filter;
 
+\local_accessibilityreview\local\license::require_valid();
+
 $courseid = optional_param('id', 0, PARAM_INT);
 $site = optional_param('site', 0, PARAM_BOOL);
 

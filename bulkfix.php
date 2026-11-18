@@ -32,6 +32,8 @@ use local_accessibilityreview\local\fix\fix_engine;
 use local_accessibilityreview\local\fix\fix_exception;
 use local_accessibilityreview\local\fixer;
 
+\local_accessibilityreview\local\license::require_valid();
+
 $p = 'local_accessibilityreview';
 $courseid = required_param('id', PARAM_INT);
 $checkid = optional_param('check', '', PARAM_ALPHANUMEXT);

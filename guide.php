@@ -28,6 +28,8 @@ require_once(__DIR__ . '/../../config.php');
 
 use local_accessibilityreview\local\checks\check_registry;
 
+\local_accessibilityreview\local\license::require_valid();
+
 $check = optional_param('check', '', PARAM_ALPHANUMEXT);
 $page = optional_param('page', '', PARAM_ALPHA);
 

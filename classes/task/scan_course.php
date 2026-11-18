@@ -42,6 +42,9 @@ class scan_course extends \core\task\adhoc_task {
      * @return void
      */
     public function execute() {
+        if (\local_accessibilityreview\local\license::get_status() !== 'valid') {
+            return;
+        }
         $data = $this->get_custom_data();
         $scanid = (int) ($data->scanid ?? 0);
         if (!$scanid) {

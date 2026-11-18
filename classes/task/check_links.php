@@ -45,6 +45,9 @@ class check_links extends \core\task\scheduled_task {
      * @return void
      */
     public function execute() {
+        if (\local_accessibilityreview\local\license::get_status() !== 'valid') {
+            return;
+        }
         $config = get_config('local_accessibilityreview');
         if (empty($config->linkcheck)) {
             mtrace('Link checking is disabled.');

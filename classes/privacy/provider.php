@@ -95,6 +95,10 @@ class provider implements
         $collection->add_external_location_link('linkchecks', [
             'url' => 'privacy:metadata:linkchecks:url',
         ], 'privacy:metadata:linkchecks');
+        $collection->add_external_location_link('tandreig_license', [
+            'domain' => 'privacy:metadata:tandreig_license:domain',
+            'key' => 'privacy:metadata:tandreig_license:key',
+        ], 'privacy:metadata:tandreig_license');
         return $collection;
     }
 
