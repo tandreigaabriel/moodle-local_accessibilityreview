@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="local/accessibilityreview/db" VERSION="20261110" COMMENT="XMLDB file for local_accessibilityreview"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="local_accessibilityreview_scan" COMMENT="Course scan runs and resumable progress">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="status" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="queued" SEQUENCE="false" COMMENT="queued, running, complete, failed"/>
+        <FIELD NAME="requestedby" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="User who queued the scan, 0 for scheduled"/>
+        <FIELD NAME="resumestate" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="JSON resume position"/>
+        <FIELD NAME="itemsdone" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="itemsfailed" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="findingscount" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="errormessage" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timestarted" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timefinished" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="courseid" TYPE="foreign" FIELDS="courseid" REFTABLE="course" REFFIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="coursestatus" UNIQUE="false" FIELDS="courseid, status"/>
+        <INDEX NAME="status" UNIQUE="false" FIELDS="status"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="local_accessibilityreview_finding" COMMENT="Accessibility findings with stable identities">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="identity" TYPE="char" LENGTH="40" NOTNULL="true" SEQUENCE="false" COMMENT="SHA1 stable identity across rescans"/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="cmid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="provider" TYPE="char" LENGTH="50" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="itemid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="field" TYPE="char" LENGTH="50" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="itemlabel" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="checkid" TYPE="char" LENGTH="50" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="category" TYPE="char" LENGTH="30" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="severity" TYPE="char" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="manualreview" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="excerpt" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Plain text excerpt, always escaped on output"/>
+        <FIELD NAME="details" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="JSON parameters"/>
+        <FIELD NAME="contenthash" TYPE="char" LENGTH="40" NOTNULL="true" SEQUENCE="false" COMMENT="SHA1 of source field when last seen"/>
+        <FIELD NAME="state" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="open" SEQUENCE="false" COMMENT="open, inprogress, resolved, exception"/>
+        <FIELD NAME="present" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="1" SEQUENCE="false" COMMENT="Detected in the most recent scan of its source"/>
+        <FIELD NAME="lastscanid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="reviewerid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timereviewed" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timefirstseen" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timelastseen" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="courseid" TYPE="foreign" FIELDS="courseid" REFTABLE="course" REFFIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="identity" UNIQUE="true" FIELDS="identity"/>
+        <INDEX NAME="coursestate" UNIQUE="false" FIELDS="courseid, state"/>
+        <INDEX NAME="coursecategory" UNIQUE="false" FIELDS="courseid, category"/>
+        <INDEX NAME="source" UNIQUE="false" FIELDS="courseid, provider, itemid, field"/>
+        <INDEX NAME="reviewerid" UNIQUE="false" FIELDS="reviewerid"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="local_accessibilityreview_history" COMMENT="Review and lifecycle history for findings and inventory resources">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="itemtype" TYPE="char" LENGTH="20" NOTNULL="true" SEQUENCE="false" COMMENT="finding or resource"/>
+        <FIELD NAME="itemid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="0 means system"/>
+        <FIELD NAME="action" TYPE="char" LENGTH="30" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="fromstate" TYPE="char" LENGTH="20" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="tostate" TYPE="char" LENGTH="20" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="note" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="courseid" TYPE="foreign" FIELDS="courseid" REFTABLE="course" REFFIELDS="id"/>
+        <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="item" UNIQUE="false" FIELDS="itemtype, itemid"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="local_accessibilityreview_link" COMMENT="Link availability cache, one row per unique URL">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="urlhash" TYPE="char" LENGTH="40" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="url" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="host" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="linktype" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="web" SEQUENCE="false" COMMENT="web, vimeo, internal"/>
+        <FIELD NAME="status" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="unchecked" SEQUENCE="false" COMMENT="unchecked, available, unavailable, restricted, ratelimited, unknown"/>
+        <FIELD NAME="httpcode" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="reason" TYPE="char" LENGTH="50" NOTNULL="true" SEQUENCE="false" COMMENT="Reason code (language string suffix)"/>
+        <FIELD NAME="failures" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Consecutive not-found results"/>
+        <FIELD NAME="metadata" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="JSON, e.g. Vimeo caption evidence"/>
+        <FIELD NAME="timechecked" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timenextcheck" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="urlhash" UNIQUE="true" FIELDS="urlhash"/>
+        <INDEX NAME="timenextcheck" UNIQUE="false" FIELDS="timenextcheck"/>
+        <INDEX NAME="status" UNIQUE="false" FIELDS="status"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="local_accessibilityreview_linkuse" COMMENT="Where each checked URL is used in course content">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="linkid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="cmid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="provider" TYPE="char" LENGTH="50" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="itemid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="field" TYPE="char" LENGTH="50" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="itemlabel" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="lastscanid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="linkid" TYPE="foreign" FIELDS="linkid" REFTABLE="local_accessibilityreview_link" REFFIELDS="id"/>
+        <KEY NAME="courseid" TYPE="foreign" FIELDS="courseid" REFTABLE="course" REFFIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="source" UNIQUE="false" FIELDS="courseid, provider, itemid, field"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="local_accessibilityreview_res" COMMENT="Inventory of PDFs, videos and SCORM packages with manual review state">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="identity" TYPE="char" LENGTH="40" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="cmid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="restype" TYPE="char" LENGTH="20" NOTNULL="true" SEQUENCE="false" COMMENT="pdf, video, scorm"/>
+        <FIELD NAME="source" TYPE="char" LENGTH="20" NOTNULL="true" SEQUENCE="false" COMMENT="file, vimeo, youtube, external, package"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="location" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Human readable location within the course"/>
+        <FIELD NAME="provider" TYPE="char" LENGTH="50" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="itemid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="fileid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="filesize" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="filehash" TYPE="char" LENGTH="40" NOTNULL="true" SEQUENCE="false" COMMENT="Moodle file contenthash"/>
+        <FIELD NAME="url" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="linkid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="analysisstatus" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="none" SEQUENCE="false" COMMENT="none, pending, done, failed, skipped"/>
+        <FIELD NAME="analysis" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="JSON automated check results"/>
+        <FIELD NAME="timeanalysed" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="reviewstatus" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="notreviewed" SEQUENCE="false" COMMENT="notreviewed, inprogress, reviewed, issuesfound, notapplicable"/>
+        <FIELD NAME="checklist" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="JSON manual checklist answers"/>
+        <FIELD NAME="reviewnotes" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="reviewerid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timereviewed" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="present" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="1" SEQUENCE="false"/>
+        <FIELD NAME="lastscanid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timefirstseen" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timelastseen" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="courseid" TYPE="foreign" FIELDS="courseid" REFTABLE="course" REFFIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="identity" UNIQUE="true" FIELDS="identity"/>
+        <INDEX NAME="coursetype" UNIQUE="false" FIELDS="courseid, restype"/>
+        <INDEX NAME="analysisstatus" UNIQUE="false" FIELDS="analysisstatus"/>
+        <INDEX NAME="reviewerid" UNIQUE="false" FIELDS="reviewerid"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="local_accessibilityreview_snap" COMMENT="Counts saved after each completed scan, for progress over time">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="scanid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="errors" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Open or in-progress findings of error severity"/>
+        <FIELD NAME="warnings" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="notices" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="resolved" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="accepted" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="linksbroken" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="unreviewed" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Inventory items not yet reviewed"/>
+        <FIELD NAME="details" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="JSON open counts by category"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="courseid" TYPE="foreign" FIELDS="courseid" REFTABLE="course" REFFIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="coursetime" UNIQUE="false" FIELDS="courseid, timecreated"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="local_accessibilityreview_fix" COMMENT="Content fixes applied from the plugin, with the previous content kept for undo">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="cmid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="findingid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="checkid" TYPE="char" LENGTH="50" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="provider" TYPE="char" LENGTH="50" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="itemid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="field" TYPE="char" LENGTH="50" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="itemlabel" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="oldcontent" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Field content before the fix"/>
+        <FIELD NAME="newcontent" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Field content after the fix"/>
+        <FIELD NAME="summary" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="JSON description of the change"/>
+        <FIELD NAME="status" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="applied" SEQUENCE="false" COMMENT="applied, undone"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="undoneby" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timeundone" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="courseid" TYPE="foreign" FIELDS="courseid" REFTABLE="course" REFFIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="courseitem" UNIQUE="false" FIELDS="courseid, provider, itemid, field"/>
+        <INDEX NAME="findingid" UNIQUE="false" FIELDS="findingid"/>
+        <INDEX NAME="userid" UNIQUE="false" FIELDS="userid"/>
+        <INDEX NAME="undoneby" UNIQUE="false" FIELDS="undoneby"/>
+      </INDEXES>
+    </TABLE>
+  </TABLES>
+</XMLDB>

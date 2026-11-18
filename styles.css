@@ -1,0 +1,48 @@
+/* All selectors are scoped to this plugin's pages or classes. */
+
+.path-local-accessibilityreview .local-accessibilityreview-excerpt {
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-size: 0.8125rem;
+}
+
+.path-local-accessibilityreview .local-accessibilityreview-excerpt-block,
+.path-local-accessibilityreview .local-accessibilityreview-errors {
+    white-space: pre-wrap;
+    word-break: break-word;
+    max-height: 20rem;
+    overflow: auto;
+    padding: 0.5rem;
+    border: 1px solid #8f959e;
+    border-radius: 0.25rem;
+}
+
+.path-local-accessibilityreview .local-accessibilityreview-badge {
+    font-size: 0.8125rem;
+    font-weight: 600;
+}
+
+/* Warning badges sit on a light background: keep dark text even if a theme overrides it. */
+.path-local-accessibilityreview .local-accessibilityreview-badge.badge-warning {
+    color: #1d2125;
+}
+
+.path-local-accessibilityreview .local-accessibilityreview-filters select {
+    max-width: 16rem;
+}
+
+.path-local-accessibilityreview .local-accessibilityreview-details dt {
+    font-weight: 600;
+}
+
+.path-local-accessibilityreview .local-accessibilityreview-note {
+    max-width: 40rem;
+    word-break: break-word;
+}
+
+.path-local-accessibilityreview a:focus,
+.path-local-accessibilityreview button:focus,
+.path-local-accessibilityreview select:focus {
+    outline: 3px solid #0f6cbf;
+    outline-offset: 2px;
+}
