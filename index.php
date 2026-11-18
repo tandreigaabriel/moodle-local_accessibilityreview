@@ -35,6 +35,8 @@ use local_accessibilityreview\local\links\link_manager;
 use local_accessibilityreview\local\progress;
 use local_accessibilityreview\local\resource_manager;
 
+\local_accessibilityreview\local\license::require_valid();
+
 $courseid = required_param('id', PARAM_INT);
 $tab = optional_param('tab', 'overview', PARAM_ALPHA);
 $page = optional_param('page', 0, PARAM_INT);

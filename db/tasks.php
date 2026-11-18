@@ -27,6 +27,15 @@ defined('MOODLE_INTERNAL') || die();
 
 $tasks = [
     [
+        'classname' => '\local_accessibilityreview\task\renew_license',
+        'blocking' => 0,
+        'minute' => '0',
+        'hour' => '4',
+        'day' => '*',
+        'month' => '*',
+        'dayofweek' => '0',
+    ],
+    [
         'classname' => '\local_accessibilityreview\task\scheduled_scan',
         'blocking' => 0,
         'minute' => '15',

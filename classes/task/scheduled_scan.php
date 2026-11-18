@@ -42,6 +42,9 @@ class scheduled_scan extends \core\task\scheduled_task {
      * @return void
      */
     public function execute() {
+        if (\local_accessibilityreview\local\license::get_status() !== 'valid') {
+            return;
+        }
         global $DB;
         $config = get_config('local_accessibilityreview');
         if (empty($config->autoscan)) {

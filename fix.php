@@ -32,6 +32,8 @@ use local_accessibilityreview\local\finding_manager;
 use local_accessibilityreview\local\fix\fix_exception;
 use local_accessibilityreview\local\fixer;
 
+\local_accessibilityreview\local\license::require_valid();
+
 $p = 'local_accessibilityreview';
 $undoid = optional_param('undo', 0, PARAM_INT);
 

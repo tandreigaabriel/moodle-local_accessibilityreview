@@ -43,6 +43,10 @@ if ($options['help'] || empty($options['courseid'])) {
     exit(0);
 }
 
+if (\local_accessibilityreview\local\license::get_status() !== 'valid') {
+    cli_error(get_string('license_unlicensed', 'local_accessibilityreview'));
+}
+
 $courseid = (int) $options['courseid'];
 $DB->get_record('course', ['id' => $courseid], 'id', MUST_EXIST);
 $result = scanner::queue($courseid, 0);

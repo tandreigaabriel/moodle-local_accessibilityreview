@@ -38,6 +38,11 @@ if ($hassiteconfig) {
     $p = 'local_accessibilityreview';
 
     if ($ADMIN->fulltree) {
+        $settings->add(new admin_setting_heading(
+            "$p/licenseheading",
+            get_string('licenseheading', $p),
+            html_writer::link(new moodle_url('/local/accessibilityreview/license.php'), get_string('licensesettings', $p))
+        ));
         // Scanning.
         $settings->add(new admin_setting_heading(
             "$p/scanheading",

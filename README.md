@@ -485,6 +485,10 @@ Verified while building:
 
 Developed and maintained by Andrei Toma.
 
+## Licence
+
+This is a commercial plugin with a licence per site and a 14-day trial.
+
 ## License
 
 GNU GPL v3 or later. See `LICENSE`.

@@ -31,6 +31,8 @@ use local_accessibilityreview\local\history;
 use local_accessibilityreview\local\links\link_manager;
 use local_accessibilityreview\local\resource_manager;
 
+\local_accessibilityreview\local\license::require_valid();
+
 $id = required_param('id', PARAM_INT);
 $resource = $DB->get_record_sql("SELECT r.*, l.status AS linkstatus, l.metadata AS linkmetadata, l.reason AS linkreason
                                    FROM {" . resource_manager::TABLE . "} r

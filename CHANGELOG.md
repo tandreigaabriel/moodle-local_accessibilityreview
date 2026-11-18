@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.2.0
+
+- Add site licence activation and periodic validation.
+
 ## 2.1.3 (2026-11-18) – 2026111800
 
 - Fixes work again: stored text formats are compared as numbers, so "Fix" no longer refuses HTML

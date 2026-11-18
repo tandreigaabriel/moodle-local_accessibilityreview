@@ -41,6 +41,9 @@ class analyse_pdfs extends \core\task\scheduled_task {
      * @return void
      */
     public function execute() {
+        if (\local_accessibilityreview\local\license::get_status() !== 'valid') {
+            return;
+        }
         if (!pdf_analyser::enabled()) {
             mtrace('PDF analysis is disabled.');
             return;
