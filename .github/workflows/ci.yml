@@ -7,6 +7,18 @@ jobs:
     runs-on: ubuntu-22.04
 
     services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: "postgres"
+          POSTGRES_HOST_AUTH_METHOD: "trust"
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 3
       mariadb:
         image: mariadb:10.6
         env:
@@ -29,6 +41,9 @@ jobs:
           - php: '8.2'
             moodle-branch: 'MOODLE_405_STABLE'
             database: mariadb
+          - php: '8.2'
+            moodle-branch: 'MOODLE_405_STABLE'
+            database: pgsql
 
     steps:
       - name: Checkout plugin
@@ -40,7 +55,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: mbstring, intl, xml, curl, zip, gd, mysqli
+          extensions: mbstring, intl, xml, curl, zip, gd, mysqli, pgsql, pdo
           ini-values: max_input_vars=5000
           coverage: none
 

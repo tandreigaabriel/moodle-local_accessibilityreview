@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- README: "Commercial licence" section (sold through Moodle Marketplace, one perpetual licence per
+  site, 14-day trial from the listing, what the licence check sends) replaces the two short licence
+  headings; stray CI commands removed from the end of the file.
+- CI also runs the full check (including PHPUnit) on PostgreSQL 14, as required by the Moodle Marketplace.
+
 ## v2.2.0 (2026-11-19) – 2026111900
 
 - Commercial licence per site, purchased through Moodle Marketplace; 14-day trial keys.
