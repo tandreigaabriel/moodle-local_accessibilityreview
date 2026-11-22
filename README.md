@@ -485,9 +485,23 @@ Verified while building:
 
 Developed and maintained by Andrei Toma.
 
-## Licence
+## Commercial licence
 
-This is a commercial plugin with a licence per site and a 14-day trial.
+Accessibility Review is a **commercial plugin sold through Moodle Marketplace**. The code is GPL v3 or
+later; using it on a site requires a licence key for that site.
+
+- **Purchase:** one licence per Moodle site (domain), **paid once** (perpetual licence), bought on the
+  plugin's Moodle Marketplace listing. The licence key is issued after the purchase and is bound to the
+  site's domain. The licence includes updates and e-mail support for the period shown on the licence
+  page (Site administration → Plugins → Local plugins → Accessibility review → Manage licence); extending
+  support afterwards is optional and yearly.
+- **Trial:** a 14-day trial key can be requested from the Marketplace listing before purchasing.
+- **Without a valid key** the plugin pages show a licence notice and scans do not run. Existing findings
+  and reports are kept; teachers are asked to contact their site administrator.
+- **What is sent to the licence service:** the site host name, the licence key and the product name, to
+  `https://tandreig.com/api/license/activate` when the key is activated and to `…/renew` once a week by
+  the scheduled task "Refresh the site licence". No course content, findings or user data are sent;
+  all review data stays on your Moodle site. A network error never disables an activated licence.
 
 ## License
 
@@ -496,9 +510,3 @@ GNU GPL v3 or later. See `LICENSE`.
 ## Changelog
 
 See [CHANGELOG.md](CHANGELOG.md).
-
-moodle-plugin-ci phplint ./plugin
-moodle-plugin-ci phpcs ./plugin --max-warnings 0
-moodle-plugin-ci phpdoc ./plugin --max-warnings 0
-moodle-plugin-ci validate ./plugin
-moodle-plugin-ci savepoints ./plugin
