@@ -170,7 +170,7 @@ final class backup_restore_test extends \advanced_testcase {
         $this->setAdminUser();
         [$course, , $finding] = $this->reviewed_course();
         // Findings last seen before 2.3.0 have no signature.
-        $DB->set_field(finding_manager::TABLE, 'signature', '', ['id' => $finding->id]);
+        $DB->set_field(finding_manager::TABLE, 'signature', null, ['id' => $finding->id]);
 
         $newcourseid = $this->backup_and_restore($course);
         $restored = $DB->get_record(finding_manager::TABLE, ['courseid' => $newcourseid], '*', MUST_EXIST);
