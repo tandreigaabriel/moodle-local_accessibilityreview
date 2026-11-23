@@ -29,7 +29,18 @@
  * @return bool
  */
 function xmldb_local_accessibilityreview_upgrade($oldversion): bool {
-    // No upgrade steps yet: 2026111102 is the first release under this name.
-    // Future schema changes go here, each followed by upgrade_plugin_savepoint().
+    global $DB;
+    $dbman = $DB->get_manager();
+
+    if ($oldversion < 2026112300) {
+        // Element signature, so a finding's identity can be rebuilt after a course restore.
+        $table = new xmldb_table('local_accessibilityreview_finding');
+        $field = new xmldb_field('signature', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, '', 'checkid');
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+        upgrade_plugin_savepoint(true, 2026112300, 'local', 'accessibilityreview');
+    }
+
     return true;
 }

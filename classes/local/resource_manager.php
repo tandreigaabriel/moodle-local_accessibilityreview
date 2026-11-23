@@ -76,6 +76,9 @@ class resource_manager {
         global $DB;
         $now = time();
         $existing = $DB->get_record(self::TABLE, ['identity' => $data['identity']]);
+        if (!$existing) {
+            $existing = self::adopt_restored($data);
+        }
         $fields = [
             'courseid' => $data['courseid'],
             'cmid' => $data['cmid'] ?? 0,
@@ -148,6 +151,32 @@ class resource_manager {
         }
         $DB->update_record(self::TABLE, $update);
         return (int) $existing->id;
+    }
+
+    /**
+     * Match an inventory item seen now with one restored from a course backup.
+     *
+     * Restored items keep their manual review but have no scan on this site yet (lastscanid 0,
+     * present 0). File identities depend on context ids, which change on restore, so the match is
+     * made on course, type, source, course module and name; the record then takes the new identity.
+     *
+     * @param array $data Upsert data.
+     * @return \stdClass|null The adopted record, or null.
+     */
+    private static function adopt_restored(array $data): ?\stdClass {
+        global $DB;
+        $candidates = $DB->get_records(self::TABLE, ['courseid' => $data['courseid'], 'restype' => $data['restype'],
+            'source' => $data['source'], 'cmid' => $data['cmid'] ?? 0, 'lastscanid' => 0, 'present' => 0], 'id ASC');
+        $name = \core_text::substr((string) ($data['name'] ?? ''), 0, 255);
+        foreach ($candidates as $candidate) {
+            if ($candidate->name !== $name) {
+                continue;
+            }
+            $DB->update_record(self::TABLE, (object) ['id' => $candidate->id, 'identity' => $data['identity']]);
+            $candidate->identity = $data['identity'];
+            return $candidate;
+        }
+        return null;
     }
 
     /**

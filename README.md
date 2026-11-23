@@ -18,7 +18,8 @@ videos and SCORM.
 By default the plugin is **read-only** with respect to course content. An administrator can turn on
 **fixing from the report** (off by default): it changes only the element being fixed, keeps the
 previous content so every fix can be undone, and never replaces files, changes visibility or edits
-quiz questions. The plugin does not use Brickfield, paid services or external AI services.
+quiz questions. The plugin does not use paid services or external AI services; the only outbound
+requests are listed under [External requests](#external-requests).
 
 ## Features
 
@@ -336,6 +337,34 @@ The same guidance, written for teachers, is built into the plugin: **How to use 
    conformance claim.
 10. **Accessibility guides** explain every check, with steps for the Moodle editor. The student guide
     (reader mode, zoom, read-aloud, contrast, captions) can be linked from a course.
+
+## External requests
+
+Everything runs on your Moodle server. No course content or student data is sent anywhere. The plugin
+makes these outbound requests only:
+
+- **Licence check** (always on): when a licence key is activated and about once a week afterwards
+  (scheduled task), the site host name, the licence key and the product name are sent to
+  `https://tandreig.com/api/license/activate` and `…/renew`. Nothing else is included.
+- **Link and video availability checker** (optional, off by default — "Enable link checking"): the
+  server requests the URLs found in course content to see whether they still work, and asks the
+  YouTube and Vimeo oEmbed endpoints whether a video exists; the video id is sent to them. Requests
+  carry the plugin's User-Agent and, to Vimeo, the site URL as Referer.
+- **Vimeo API token** (optional): when a token is configured, caption detection calls
+  `api.vimeo.com` with that token.
+
+Local PDF analysis with Poppler runs on the server and sends nothing.
+
+## Backup and restore
+
+Manual review work is included in course backups and restored with the course: the state, reviewer,
+time, notes and history of findings that were reviewed (In progress, Resolved, Accepted exception or
+with notes) and the checklists, status and notes of reviewed PDF, video and SCORM items. Open findings,
+scan runs, progress snapshots, link caches and applied fixes are not backed up: the first scan of the
+restored course regenerates the findings and matches the restored reviews to them (by rebuilt identity,
+or by check and excerpt for findings last reviewed before 2.3.0), and fixes belong to the original
+content records. Course duplication and import use the same mechanism. Reviewer ids are mapped only
+when user data is included in the backup; otherwise they are cleared and the history keeps the notes.
 
 ## Security notes
 
