@@ -93,10 +93,16 @@ class finding_manager {
         $now = time();
         $contenthash = sha1((string) $item->html);
         $existing = [];
+        $restored = [];
         $records = $DB->get_records(self::TABLE, ['courseid' => $item->courseid, 'provider' => $item->provider,
             'itemid' => $item->itemid, 'field' => $item->field]);
         foreach ($records as $record) {
             $existing[$record->identity] = $record;
+            if (self::is_restored($record)) {
+                // Restored from a course backup made before signatures were stored: the identity
+                // could not be rebuilt, so it is matched on the check and excerpt instead.
+                $restored[$record->checkid . '|' . (string) $record->excerpt] = $record;
+            }
         }
 
         $seen = [];
@@ -114,8 +120,20 @@ class finding_manager {
                 continue;
             }
             $seen[$identity] = true;
+            $signature = \core_text::substr($issue->signature, 0, 255);
+            if (!isset($existing[$identity]) && isset($restored[$issue->checkid . '|' . $issue->excerpt])) {
+                $adopted = $restored[$issue->checkid . '|' . $issue->excerpt];
+                unset($restored[$issue->checkid . '|' . $issue->excerpt], $existing[$adopted->identity]);
+                $DB->update_record(self::TABLE, (object) ['id' => $adopted->id, 'identity' => $identity,
+                    'signature' => $signature, 'contenthash' => $contenthash]);
+                $adopted->identity = $identity;
+                $adopted->signature = $signature;
+                $adopted->contenthash = $contenthash;
+                $existing[$identity] = $adopted;
+            }
             $common = [
                 'cmid' => $item->cmid,
+                'signature' => $signature,
                 'itemlabel' => \core_text::substr($item->label, 0, 255),
                 'category' => $def['category'],
                 'severity' => $def['severity'],
@@ -146,6 +164,11 @@ class finding_manager {
             $old = $existing[$identity];
             $update = (object) ($common + ['id' => $old->id, 'contenthash' => $contenthash]);
             $reopen = null;
+            if (self::is_restored($old)) {
+                // First scan after a course restore: keep the reviewed state.
+                $old->contenthash = $contenthash;
+                $old->present = 1;
+            }
             if (!$old->present && $old->state === self::STATE_RESOLVED) {
                 $reopen = 'reappeared';
             } else if (
@@ -178,6 +201,16 @@ class finding_manager {
             self::mark_absent($old, $scanid, 'notdetected');
         }
         return count($seen);
+    }
+
+    /**
+     * Whether a finding was restored from a course backup and not yet seen by a scan on this site.
+     *
+     * @param \stdClass $record
+     * @return bool
+     */
+    public static function is_restored(\stdClass $record): bool {
+        return (int) $record->lastscanid === 0 && (int) $record->present === 0;
     }
 
     /**
