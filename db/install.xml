@@ -40,7 +40,7 @@
         <FIELD NAME="field" TYPE="char" LENGTH="50" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="itemlabel" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="checkid" TYPE="char" LENGTH="50" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="signature" TYPE="char" LENGTH="255" NOTNULL="true" DEFAULT="" SEQUENCE="false" COMMENT="Element signature used to rebuild the identity after a course restore; empty for findings last seen before 2.3.0"/>
+        <FIELD NAME="signature" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="Element signature used to rebuild the identity after a course restore; null for findings last seen before 2.3.0"/>
         <FIELD NAME="category" TYPE="char" LENGTH="30" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="severity" TYPE="char" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="manualreview" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>

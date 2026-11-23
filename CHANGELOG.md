@@ -6,7 +6,7 @@
   SCORM items travel with course backups, duplication and import; the first scan after a restore
   matches them instead of creating new findings. New `signature` field on findings (upgrade step) so
   the identity can be rebuilt after a restore; findings reviewed before 2.3.0 are matched by check
-  and excerpt.
+  and excerpt (their signature is null).
 - README: "External requests" section (licence check, optional link and video checker, optional Vimeo
   token) and a "Backup and restore" section, as requested in the Marketplace review (MMRT-305).
 - README: "Commercial licence" section (sold through Moodle Marketplace, one perpetual licence per

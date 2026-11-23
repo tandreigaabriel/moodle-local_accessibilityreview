@@ -35,7 +35,7 @@ function xmldb_local_accessibilityreview_upgrade($oldversion): bool {
     if ($oldversion < 2026112300) {
         // Element signature, so a finding's identity can be rebuilt after a course restore.
         $table = new xmldb_table('local_accessibilityreview_finding');
-        $field = new xmldb_field('signature', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, '', 'checkid');
+        $field = new xmldb_field('signature', XMLDB_TYPE_CHAR, '255', null, null, null, null, 'checkid');
         if (!$dbman->field_exists($table, $field)) {
             $dbman->add_field($table, $field);
         }
