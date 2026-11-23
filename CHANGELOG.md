@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.3.1 (2026-11-23) – 2026112301
+
+- Plugin maturity set to stable (the listing showed "Beta"). No code changes.
+
 ## v2.3.0 (2026-11-23) – 2026112300
 
 - Backup and restore: reviewed findings (state, reviewer, notes, history) and reviewed PDF, video and
