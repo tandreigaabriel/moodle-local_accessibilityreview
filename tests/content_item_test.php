@@ -24,7 +24,8 @@ use local_accessibilityreview\local\content\content_item;
  * Moodle defines the FORMAT_* constants as strings, while stored formats are read as integers.
  *
  * @package    local_accessibilityreview
- * @copyright  2026 Andrei Toma
+ * @copyright  2026 TAG Digital Solutions Ltd <https://tandreig.com>
+ * @author     Andrei Toma
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @covers     \local_accessibilityreview\local\content\content_item
  */

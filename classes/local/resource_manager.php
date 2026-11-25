@@ -20,7 +20,8 @@ namespace local_accessibilityreview\local;
  * PDF / video / SCORM inventory records and their manual review checklists.
  *
  * @package    local_accessibilityreview
- * @copyright  2026 Andrei Toma
+ * @copyright  2026 TAG Digital Solutions Ltd <https://tandreig.com>
+ * @author     Andrei Toma
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class resource_manager {

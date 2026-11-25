@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.3.2
+
+- Copyright holder: TAG Digital Solutions Ltd.
+
 ## v2.3.1 (2026-11-23) – 2026112301
 
 - Plugin maturity set to stable (the listing showed "Beta"). No code changes.

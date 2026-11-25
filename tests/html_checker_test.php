@@ -23,7 +23,8 @@ use local_accessibilityreview\local\checks\html_checker;
  * Tests for the HTML checks and contrast calculation.
  *
  * @package    local_accessibilityreview
- * @copyright  2026 Andrei Toma
+ * @copyright  2026 TAG Digital Solutions Ltd <https://tandreig.com>
+ * @author     Andrei Toma
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @covers     \local_accessibilityreview\local\checks\html_checker
  * @covers     \local_accessibilityreview\local\checks\contrast

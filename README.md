@@ -2,7 +2,7 @@
 
 `local_accessibilityreview`
 
-Maintained by Andrei Toma
+Developed and maintained by Andrei Toma — TAG Digital Solutions Ltd (trading as TAG Web Design & Development), https://tandreig.com. © 2026 TAG Digital Solutions Ltd.
 
 ## Description
 
@@ -512,7 +512,7 @@ Verified while building:
 
 ## Support
 
-Developed and maintained by Andrei Toma.
+Developed and maintained by Andrei Toma — TAG Digital Solutions Ltd (trading as TAG Web Design & Development), https://tandreig.com. © 2026 TAG Digital Solutions Ltd.
 
 ## Commercial licence
 
