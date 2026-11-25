@@ -26,7 +26,8 @@ require_once($CFG->libdir . '/formslib.php');
  * Finding review form (state + note). moodleform adds and checks the sesskey.
  *
  * @package    local_accessibilityreview
- * @copyright  2026 Andrei Toma
+ * @copyright  2026 TAG Digital Solutions Ltd <https://tandreig.com>
+ * @author     Andrei Toma
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class review_form extends \moodleform {

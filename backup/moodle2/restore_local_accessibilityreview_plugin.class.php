@@ -26,7 +26,8 @@ use local_accessibilityreview\local\finding_manager;
  * of the course matches them and keeps their reviewed state.
  *
  * @package    local_accessibilityreview
- * @copyright  2026 Andrei Toma
+ * @copyright  2026 TAG Digital Solutions Ltd <https://tandreig.com>
+ * @author     Andrei Toma
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class restore_local_accessibilityreview_plugin extends restore_local_plugin {

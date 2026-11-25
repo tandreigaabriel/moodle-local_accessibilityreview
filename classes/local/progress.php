@@ -26,7 +26,8 @@ use local_accessibilityreview\local\links\link_manager;
  * passed would suggest a level of accessibility that automated checks cannot measure.
  *
  * @package    local_accessibilityreview
- * @copyright  2026 Andrei Toma
+ * @copyright  2026 TAG Digital Solutions Ltd <https://tandreig.com>
+ * @author     Andrei Toma
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class progress {

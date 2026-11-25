@@ -28,7 +28,8 @@ use local_accessibilityreview\local\links\vimeo;
  * DNS is replaced by a fake resolver so the tests never touch the network.
  *
  * @package    local_accessibilityreview
- * @copyright  2026 Andrei Toma
+ * @copyright  2026 TAG Digital Solutions Ltd <https://tandreig.com>
+ * @author     Andrei Toma
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @covers     \local_accessibilityreview\local\links\url_guard
  * @covers     \local_accessibilityreview\local\links\security_helper

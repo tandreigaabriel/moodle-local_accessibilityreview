@@ -30,7 +30,8 @@ use restore_dbops;
  * Manual review work travels with a course backup and survives the first scan after restore.
  *
  * @package    local_accessibilityreview
- * @copyright  2026 Andrei Toma
+ * @copyright  2026 TAG Digital Solutions Ltd <https://tandreig.com>
+ * @author     Andrei Toma
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @covers     \backup_local_accessibilityreview_plugin
  * @covers     \restore_local_accessibilityreview_plugin

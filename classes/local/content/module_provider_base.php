@@ -20,7 +20,8 @@ namespace local_accessibilityreview\local\content;
  * Shared helpers for providers whose sources are course modules.
  *
  * @package    local_accessibilityreview
- * @copyright  2026 Andrei Toma
+ * @copyright  2026 TAG Digital Solutions Ltd <https://tandreig.com>
+ * @author     Andrei Toma
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 abstract class module_provider_base implements content_provider {
